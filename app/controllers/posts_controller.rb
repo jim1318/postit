@@ -16,6 +16,7 @@ class PostsController < ApplicationController
   end
 
   def create
+    binding.pry
     @post = Post.new(post_params)
     @post.creator = current_user
     if @post.save
@@ -30,6 +31,7 @@ class PostsController < ApplicationController
   end
 
   def update
+    binding.pry
     if @post.update(post_params)
       flash[:notice] = "The post was updated"
       redirect_to posts_path
@@ -41,8 +43,7 @@ class PostsController < ApplicationController
   private
 
   def post_params
-    params.require(:post).permit(:title, :url, :description, category_ids: [])
-    #params.require(:post).permit!
+    params.require(:post).permit(:title, :url, :description, category_ids:[])
   end
 
   def set_post
