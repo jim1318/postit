@@ -1,5 +1,10 @@
 class UsersController < ApplicationController
+  before_action :set_user, only: [:show, :edit, :update]
+  before_action :require_same_user, only: [:edit, :update]
   
+  def show
+  end
+
   def new
     @user = User.new
   end
@@ -16,13 +21,33 @@ class UsersController < ApplicationController
   end
 
   def edit
-    @user = User.find(params[:id])
+  end
+
+  def update
+    if @user.update(user_params)
+      flash[:notice] = "Profile Updated"
+      redirect_to user_path
+    else
+      flash[:error] = "Problem Updating"
+      render :edit
+    end
   end
 
   private
 
   def user_params
     params.require(:user).permit(:username, :password, :phone, :time_zone)
+  end
+
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def require_same_user
+    if current_user != @user
+      flash[:error] = "You're not allowed to do taht"
+      redirect_to root_path 
+    end
   end
 
 end
