@@ -1,15 +1,15 @@
 <div class="row">
   <div class='span0 well text-center'>
     <% if logged_in? %>
-      <%= link_to vote_post_path(post, vote: true), method: 'post' do %>
+      <%= link_to vote_post_path(post, vote: true), method: 'post', remote: true do %>
         <i class='icon-arrow-up'></i>
-      <% end %> 
+      <% end %>
+      <br/> 
     <% end %>
-    <br/>
-    <%= post.total_votes %>
+    <span id='post_<%=post.slug%>'><%= post.total_votes %></span>
     <br/>
     <% if logged_in? %>
-      <%= link_to vote_post_path(post, vote: false), method: 'post' do %>
+      <%= link_to vote_post_path(post, vote: false), method: 'post', remote: true do %>
         <i class='icon-arrow-down'></i>
       <% end %>
     <% end %>
@@ -24,7 +24,7 @@
       <small>at <%= display_datetime(post.created_at) %></small>
     </p>
     <small>
-      <span><%= link_to("#{post.comments.length} comments", post_path(post)) %></span>
+      <span><%= link_to("#{post.comments.length} comments", post_path(post.to_param)) %></span>
     </small>
     <small>
       <span><%= link_to('edit', edit_post_path(post)) %></span>
